@@ -3,76 +3,49 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Heatmap : MonoBehaviour
 {
     private static List<Vector3> m_deathPositions = new List<Vector3>();
     private static GameObject heatmapPrefab;
+    private static string m_path = "Assets/Resources/";
+
     // Use this for initialization
     void Start()
     {
         /*
-         * Check whether heatmap game object exists, if not, create it.
-         * then add everything under that and then allow the user to turn them on and off by just switching the rendering of the parent game object. 
+         * TODO: Check whether heatmap game object exists, if not, create it.
+         * 
+         * add everything under that and then allow the user to turn them on and off by just switching the rendering of the parent game object. 
          * check if they have the special prefab, if not make it. 
          */
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    //This will collect death position data, re-convert it into a vector 3 format and spawn transparent blocks on death positions recorded via PlayerController 
-
-    //NOTE: THIS MAY BREAK WHEN MOVING BETWEEN LEVELS, NEED TO INTRODUCE LEVEL BASED HEATMAP TXT FILES
+    
     [MenuItem("Tools/Heatmap/Generate")]
     static void ReadDeathData()
     {
-        heatmapPrefab = (GameObject)Resources.Load("Prefabs/hMap_Sphere", typeof(GameObject));
-        string path = "Assets/Resources/DeathPositions.txt";
+        string filePath = m_path + SceneManager.GetActiveScene().name; //Creates and uses a file per scence. This application uses your scene name to generate death textfile. 
+        heatmapPrefab = (GameObject)Resources.Load("prefabs/deathPrefab", typeof(GameObject));//Prefab to use to render death positions.
 
         //Read the text from directly from the txt file
-        StreamReader reader = new StreamReader(path);
+        string fullPath = filePath + ".txt";
+        StreamReader reader = new StreamReader(fullPath);
         string deathCoords = "";
-        while ((deathCoords = reader.ReadLine()) != null) {
+        while ((deathCoords = reader.ReadLine()) != null) {//going through the text file line by line and adding it to a list of vectors.
             m_deathPositions.Add(stringToVec(deathCoords));
             deathCoords = "";
         }
         reader.Close();
-        renderDeathData();
-        //USE THIS TO CONVERT THE STRING ARRAY OF VECTOR3 INTO ACTUAL VECTOR 3
-        //https://answers.unity.com/questions/1134997/string-to-vector3.html
+       renderDeathData();
     }
 
-    public static Vector3 StringToVector3(string sVector)
-    {
-        // Remove the parentheses
-        if (sVector.StartsWith("(") && sVector.EndsWith(")"))
-        {
-            sVector = sVector.Substring(1, sVector.Length - 2);
-        }
-
-        // split the items
-        string[] sArray = sVector.Split(',');
-
-        // store as a Vector3
-
-        Vector3 result = new Vector3(
-            float.Parse(sArray[0]),
-            float.Parse(sArray[1]),
-            float.Parse(sArray[2]));
-
-        print("this is the result " + result);
-        return result;
-        //m_deathPositions.Add(/*your vector here*/);
-    }
+    
     public static Vector3 stringToVec(string _st)
     {
         Vector3 result = new Vector3();
         string[] vals = _st.Split(',');
-        print(vals.Length + " !!!!  " + vals[0] + " st is : " + _st);
         if (vals.Length == 3)
         {
             result.Set(float.Parse(vals[0]), float.Parse(vals[1]), float.Parse(vals[2]));
