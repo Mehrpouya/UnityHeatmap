@@ -6,27 +6,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class Heatmap : MonoBehaviour
+public class Heatmap_BombDrop : MonoBehaviour
 {
     private static List<Vector3> m_deathPositions = new List<Vector3>();
     private static GameObject heatmapPrefab;
-    private static string m_path = "Assets/Resources/";
+    private static string m_path = "Assets/Resources/Text/";
 
-    // Use this for initialization
     void Start()
     {
-        /*
-         * TODO: Check whether heatmap game object exists, if not, create it.
-         * 
-         * add everything under that and then allow the user to turn them on and off by just switching the rendering of the parent game object. 
-         * check if they have the special prefab, if not make it. 
-         */
-    }
-    
-    [MenuItem("Tools/Heatmap/Generate")]
+
+}
+
+[MenuItem("Tools/Bomb Heatmap/Generate")]
     static void ReadDeathData()
     {
-        string filePath = m_path + SceneManager.GetActiveScene().name; //Creates and uses a file per scence. This application uses your scene name to generate death textfile. 
+        m_deathPositions.Clear();
+        string filePath = m_path + SceneManager.GetActiveScene().name + "_Bombmap_Playtest"; //Creates and uses a file per scence. This application uses your scene name to generate death textfile. 
         heatmapPrefab = (GameObject)Resources.Load("prefabs/deathPrefab", typeof(GameObject));//Prefab to use to render death positions.
 
         //Read the text from directly from the txt file
@@ -60,16 +55,13 @@ public class Heatmap : MonoBehaviour
         }
     }
 
-    [MenuItem("Tools/Heatmap/Clear")]
+    [MenuItem("Tools/Bomb Heatmap/Clear")]
     public static void destroyHeatmapObjects()
     {
-        foreach (Vector3 deathPos in m_deathPositions)
-        {
             GameObject[] hMap_Spheres = GameObject.FindGameObjectsWithTag("heatmap");
             for (int i = 0; i < hMap_Spheres.Length; i++)
             {
                 GameObject.DestroyImmediate(hMap_Spheres[i]);
             }
-        }
     }
 }
