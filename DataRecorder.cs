@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
  * Date last modified: 11/10/2019
  */
 public static class DataRecorder {
-    public static string m_path= "Assets/Resources/";
+    public static string m_path= "Assets/Resources/Text/";
     /*
      * This function will open the file using the path variable
      * and then adds whatever the user is sending to the end of the file

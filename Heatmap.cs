@@ -17,11 +17,11 @@ public class Heatmap_BombDrop : MonoBehaviour
 
 }
 
-[MenuItem("Tools/Bomb Heatmap/Generate")]
+[MenuItem("Tools/Heatmap/Generate")]
     static void ReadDeathData()
     {
         m_deathPositions.Clear();
-        string filePath = m_path + SceneManager.GetActiveScene().name + "_Bombmap_Playtest"; //Creates and uses a file per scence. This application uses your scene name to generate death textfile. 
+        string filePath = m_path + SceneManager.GetActiveScene().name ; //Creates and uses a file per scence. This application uses your scene name to generate death textfile. 
         heatmapPrefab = (GameObject)Resources.Load("prefabs/deathPrefab", typeof(GameObject));//Prefab to use to render death positions.
 
         //Read the text from directly from the txt file
@@ -55,7 +55,7 @@ public class Heatmap_BombDrop : MonoBehaviour
         }
     }
 
-    [MenuItem("Tools/Bomb Heatmap/Clear")]
+    [MenuItem("Tools/Heatmap/Clear")]
     public static void destroyHeatmapObjects()
     {
             GameObject[] hMap_Spheres = GameObject.FindGameObjectsWithTag("heatmap");
