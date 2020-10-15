@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
  * this Heatmap tool was originally developed by: Garen O'Donnell
  * Date Created: 04/10/2019
  * Modified by: Hadi Mehrpouya
- * Date last modified: 11/10/2019
+ * Date last modified: 14/10/2020
  */
 public static class DataRecorder {
     public static string m_path= "Assets/Resources/Text/";
@@ -26,14 +26,15 @@ public static class DataRecorder {
         string filePath = m_path + SceneManager.GetActiveScene().name;
         bool result = false;
         string lineToAdd= _pos.x + "," + _pos.y + "," + _pos.z;
-        using (StreamWriter sw = File.AppendText(filePath+".txt")) //This line will try to open the file and if it doesn't exist, if will make it!
+        Debug.Log(lineToAdd);
+        using (StreamWriter sw = File.AppendText(filePath+".txt")) //This line will try to open the file and if it doesn't exist, it will make it!
         {
             //Write death position vector to our text file as a new line
             sw.WriteLine(lineToAdd);
             sw.Close();
         }
         ////Re-import the file to update the reference in the editor
-        AssetDatabase.ImportAsset(filePath);
+        AssetDatabase.ImportAsset(filePath+".txt");
         TextAsset asset = Resources.Load<TextAsset>(filePath + ".txt");
         ////Print the text from the file
         result = true;//If we get to this part of our code, this means things went ok, so we return true. 
